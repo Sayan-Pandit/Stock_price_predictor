@@ -17,11 +17,16 @@ def fetch_latest_data_and_update_csv(symbol):
     df = yf.download(
         symbol,
         start="2018-01-01",
-        end=datetime.today().strftime("%Y-%m-%d")
+        end=datetime.today().strftime("%Y-%m-%d"),
+        progress=False
     )
     df.reset_index(inplace=True)
 
-    # Save updated data to CSV
+    # SAFETY CHECK
+    if df.empty:
+        raise ValueError("Yahoo Finance returned empty data")
+
+    # Save ONLY valid data
     data_path = os.path.join(BASE_DIR, "data", "raw_data.csv")
     df.to_csv(data_path, index=False)
 
@@ -31,9 +36,12 @@ symbol = "RELIANCE.NS"
 
 try:
     df = fetch_latest_data_and_update_csv(symbol)
+    source = "Live"
 except Exception:
     st.warning("Live data unavailable. Using last saved CSV.")
     df = pd.read_csv(os.path.join(BASE_DIR, "data", "raw_data.csv"))
+    source = "CSV"
+st.caption(f"📡 Data source: {source}")
 
 # Convert Date column to datetime (safety)
 df['Date'] = pd.to_datetime(df['Date'])
