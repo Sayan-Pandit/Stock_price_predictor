@@ -66,9 +66,19 @@ df = add_technical_indicators(df)
 # Target
 df['Target'] = (df['Close'].shift(-1) > df['Close']).astype(int)
 df.dropna(inplace=True)
+MIN_ROWS = 120
+
 
 # Train model
+if len(df) < MIN_ROWS:
+    st.error(
+        f"Not enough data to train the model "
+        f"({len(df)} rows available, minimum required: {MIN_ROWS})."
+    )
+    st.stop()
+
 model, accuracy = train_model(df)
+
 
 # Latest data point
 latest = df.iloc[-1:]
