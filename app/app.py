@@ -4,13 +4,38 @@ import sys
 import os
 import plotly.express as px
 import yfinance as yf
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import plotly.graph_objects as go
-
+import pytz
 
 # Add project root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
+
+
+def get_market_status():
+    ist = pytz.timezone("Asia/Kolkata")
+    now = datetime.now(ist)
+
+    market_open = time(9, 15)
+    market_close = time(15, 30)
+
+    # Weekend check
+    if now.weekday() >= 5:  # Saturday (5), Sunday (6)
+        return "CLOSED", "Weekend – Market Closed"
+
+    # Before market open
+    if now.time() < market_open:
+        return "CLOSED", "Market has not opened yet"
+
+    # Market open
+    if market_open <= now.time() <= market_close:
+        return "OPEN", "Market is currently open"
+
+    # After market close
+    return "CLOSED", "Market closed for the day"
+
+
 
 @st.cache_data(ttl=1800)  # refresh every 30 minutes
 def fetch_latest_data_and_update_csv(symbol):
@@ -56,6 +81,17 @@ st.set_page_config(page_title="Stock Price Predictor", layout="wide")
 st.title("📈 Stock Price Movement Predictor")
 st.markdown("Predicts whether the stock price will go **UP or DOWN** the next day.")
 st.markdown("⚠️ *For educational purposes only*")
+
+status, reason = get_market_status()
+
+if status == "OPEN":
+    st.success("🟢 Market is OPEN")
+elif "not opened" in reason.lower():
+    st.info("🕒 Market has not opened yet")
+else:
+    st.error("🔴 Market is CLOSED")
+
+st.caption(reason)
 
 # Fix yfinance MultiIndex columns
 if isinstance(df.columns, pd.MultiIndex):
@@ -142,7 +178,7 @@ fig.add_trace(go.Scatter(
 ))
 
 fig.update_layout(
-    title="Stock Price (Candlestick) with Moving Averages",
+    title="Stock Price (Candlestick) with Moving Averages\n",
     xaxis_title="Date",
     yaxis_title="Price (₹)",
     template="plotly_dark",
