@@ -130,6 +130,7 @@ fig.update_layout(
     template="plotly_dark",
     height=600,
     dragmode="pan",
+    margin=dict(l=60, r=40, t=60, b=90),
 
     # Enable zoom & range controls
     xaxis=dict(
