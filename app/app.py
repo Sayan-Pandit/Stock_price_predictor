@@ -162,7 +162,3 @@ st.plotly_chart(
         "displaylogo": False
     }
 )
-
-
-
-
