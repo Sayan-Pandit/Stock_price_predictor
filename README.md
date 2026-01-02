@@ -6,7 +6,7 @@ The project integrates **data science, machine learning, and a Streamlit web int
 > ⚠️ This project is for **educational purposes only** and is **not financial advice**.
 
 ---
-🔗 **Live Demo:** https://your-username-stock-price-predictor.streamlit.app
+🔗 **Live Demo:** https://stock-pricepredictor.streamlit.app/
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-Live_App-red?logo=streamlit)](https://stock-pricepredictor.streamlit.app/)
 
