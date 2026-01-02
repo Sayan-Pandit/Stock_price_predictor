@@ -207,5 +207,3 @@ B.Tech CSE (Data Science)
 This project is for **academic and learning purposes only**.
 It does **not provide financial or investment advice**.
 
-```
-
