@@ -130,7 +130,7 @@ fig.update_layout(
     template="plotly_dark",
     height=600,
     dragmode="pan",
-    margin=dict(l=60, r=40, t=60, b=90),
+    
 
     # Enable zoom & range controls
     xaxis=dict(
@@ -150,6 +150,15 @@ fig.update_layout(
         title="Price (₹)",
         autorange=True,
         fixedrange=False  # 👈 allows Y-axis zoom too
+    )
+)
+
+fig.update_xaxes(
+    tickformat="%d %b %Y",
+    tickangle=-30,
+    minor=dict(
+        ticklen=4,
+        showgrid=True
     )
 )
 
