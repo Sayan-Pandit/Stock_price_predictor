@@ -5,3 +5,5 @@ ta
 scikit-learn
 streamlit
 plotly
+pandas_datareader
+matplotlib
